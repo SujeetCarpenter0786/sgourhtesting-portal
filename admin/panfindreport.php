@@ -1,0 +1,258 @@
+<?php
+include('header.php');
+$res = mysqli_query($conn, "SELECT * FROM `panfind`");
+if(isset($_POST['delete']) && $_POST['delete'] == "ahkwebsolutions"){
+    $id = base64_decode($_POST['id']);
+    $del = mysqli_query($conn,"DELETE FROM `panfind` WHERE id='$id'");
+    if($del){
+        ?>
+        <script>
+            $(function(){
+                Swal.fire(
+                    'Success',
+                    'Data Deleted Success!',
+                    'success'
+                )
+            });
+        </script>
+        <?php
+    }else{
+        ?>
+        <script>
+            $(function(){
+                Swal.fire(
+                    'Opps',
+                    'Data Not Deleted !',
+                    'error'
+                )
+            });
+        </script>
+        <?php
+    }
+}
+?>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+
+    <!-- Content Header (Page header) -->
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0">PAN Find List</h1>
+      </div><!-- /.col -->
+      <div class="col-sm-6 text-right">
+	  			<a href="panfind.php" class="btn btn-primary btn-sm">Find Pan NO.</a> 
+		      </div><!-- /.col -->
+    </div><!-- /.row -->
+   <div class="col-md-12">
+            <div class="card card-default">
+              <div class="card-header">
+             
+                <div class="card-title">
+                 <h3><strong>Enter beneficiary Details</strong> </h3>
+                  <div class="card-title"><h4>Disclaimer :- PLEASE VERIFY PAN CARD NUMBER</h4>
+                  <h4>Disclaimer :- Its Take Upto 2 hr to 24 hr Please Be paitent</h4>
+                  <a class="btn btn-warning" href="check.php" target="_blank">Verify Pan Card number</a>
+         </div>
+              </div>
+              </div>
+              </div>
+              </div>
+                 <marquee width="auto"   direction="left" height="auto" transition="0.5s" >
+     <h4 class="mt-2 text-danger"><strong>PLEASE VERIFY PAN CARD NUMBER BEFORE USE!</strong></h4>
+</marquee>
+    
+  </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<!-- Main content -->
+<section class="content">
+	<div class="container-fluid">
+
+		<div class="row">
+	          <div class="col-12">
+
+	            <div class="card">
+
+	              <div class="card-body">
+
+	              	
+	                <table id="example2" class="table table-bordered table-hover">
+	                  <thead>
+	                  <tr>
+	                    <th style="width: 5px;" class="text-center">ID</th>
+	                    <th style="width: 50px;" class="text-center">Name</th>
+                                            <th class="text-center" style="width:100px;">PAN NUMBER</th>
+                      	                    <th style="width: 120px;" class="text-center">AADHAAR NUMBER</th>
+
+	                    <th style="width: 50px;" class="text-center">Status</th>
+                        <th style="width: 20px;" class="text-center">Action</th>
+	                  </tr>
+	                  </thead>
+	                  <tbody>
+
+					  <?php
+                                    if(mysqli_num_rows($res)>0){
+                                        while($data = mysqli_fetch_array($res)){
+                                            ?>
+                                             <tr>
+                                        <td class="text-center"><?php  echo $data['id'] ?></td>
+                                        <td class="text-center"><strong><?php  echo $data['name'] ?></strong></td>
+                                        <td class="text-center"><button type="button" class="btn btn-danger btn-tb-status"><h9><strong><?php echo $data['panno'] ?></h9></strong></button></td>
+                                        <td class="text-center"><h5><strong><?php  echo $data['aadhaar'] ?></strong></h5></td>
+                                        <td class="text-center"><button type="button" class="btn btn-warning btn-tb-status"><h9><strong><?php echo $data['status'] ?></h9></strong></button>
+                                        </td>
+										
+	                    		                    		
+
+                                        <td class="text-center">
+                                          
+                                            <form action="" method="post" class="d-inline">
+                                            <a href="<?php echo $data['imglink']  ?>" class="btn btn-dark btn-sm ml-2"><i class="fa fa-eye"></i></a>
+                                                <input type="hidden" name="id" value="<?php echo base64_encode($data['id'])  ?>">
+                                                <input type="hidden" name="delete" value="ahkwebsolutions"> <input type="hidden" name="_method" value="DELETE"> <button type="button" class="btn btn-danger btn-sm ml-2" onclick="deleteRecord(this)"><i class="fa fa-trash"></i></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                            <?php
+                                        }
+                                    }
+                                ?>
+	              	  
+	                  </tfoot>
+	                </table>
+	              </div>
+	              <!-- /.card-body -->
+	            </div>
+	            <!-- /.card -->
+	        </div>
+    	</div>
+
+	</div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+
+
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- <footer class="main-footer">
+    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 3.1.0
+    </div>
+  </footer> -->
+
+  <!-- Control Sidebar -->
+  <!-- <aside class="control-sidebar control-sidebar-dark"> -->
+    <!-- Control sidebar content goes here -->
+  <!-- </aside> -->
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+  $.widget.bridge('uibutton', $.ui.button)
+</script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Select2 -->
+<script src="plugins/select2/js/select2.full.min.js"></script>
+
+<!-- SweetAlert -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.all.min.js"></script>
+
+<!-- DataTables  & Plugins -->
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+
+<script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+<!-- ChartJS -->
+<script src="plugins/chart.js/Chart.min.js"></script>
+<!-- Sparkline -->
+<script src="plugins/sparklines/sparkline.js"></script>
+<!-- JQVMap -->
+<script src="plugins/jqvmap/jquery.vmap.min.js"></script>
+<script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+<!-- jQuery Knob Chart -->
+<script src="plugins/jquery-knob/jquery.knob.min.js"></script>
+<!-- daterangepicker -->
+<script src="plugins/moment/moment.min.js"></script>
+<script src="plugins/daterangepicker/daterangepicker.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- Summernote -->
+<script src="plugins/summernote/summernote-bs4.min.js"></script>
+<!-- overlayScrollbars -->
+<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="dist/js/demo.js"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="dist/js/pages/dashboard.js"></script>
+
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js" integrity="sha512-zlWWyZq71UMApAjih4WkaRpikgY9Bz1oXIW5G0fED4vk14JjGlQ1UmkGM392jEULP8jbNMiwLWdM8Z87Hu88Fw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+function alertMessage(type,message) {
+  if (type=='error') {
+    type = 'danger';
+  }
+
+  return "<div class='alert alert-"+type+" alert-dismissible'> <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> "+message+" </div>";
+}
+</script>
+
+<script>
+  $(function () {
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+
+function deleteRecord(th) {
+	Swal.fire({
+	  title: 'Are you sure?',
+	  text: "You won't be able to revert this!",
+	  icon: 'warning',
+	  showCancelButton: true,
+	  showConfirmButton: true,
+	  confirmButtonColor: '#3085d6',
+	  cancelButtonColor: '#d33',
+	  confirmButtonText: 'Yes, delete it!'
+	}).then((result) => {
+	  if (result.value==1) {
+	  	$(th).parent().submit();
+	  }
+	});
+}
+</script>
+
+</body>
+</html>
